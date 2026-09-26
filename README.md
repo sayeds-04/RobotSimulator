@@ -162,6 +162,6 @@ Source code (RCL)
 
 ## Developer
 
-**Md. Zihad Hosain Siyam**  
+**Abu Sayed Ruman**  
 Compiler Design — Academic Project  
 Technologies: Flex · Bison · C · Python · Tkinter
