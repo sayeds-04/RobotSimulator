@@ -1,0 +1,60 @@
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -Wall -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py
+ [    Running:  flex robot_lexer.l
+ [    Running:  gcc -w -o robot_compiler.exe main.c robot_parser.tab.c lex.yy.c
+ [    Input:  "move forward 5 steps"
+ [    Output:
+ [    Running:  python frontend\app.py

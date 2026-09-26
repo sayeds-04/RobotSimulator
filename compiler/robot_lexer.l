@@ -4,10 +4,6 @@
  *  robot_lexer.l  --  Flex Lexical Analyser
  *  Robot Command Language (RCL)
  *
- *  Purpose:
- *    Scan the source text character-by-character and break it
- *    into a stream of tokens for the Bison parser.
- *
  *  Tokens produced:
  *    MOVE, FORWARD, BACKWARD, LEFT, RIGHT, TURN,
  *    STOP, ABILITY, SPEED, STEPS, DEGREES,
@@ -18,107 +14,86 @@
  *    Whitespace, newlines, single-line comments ( # ... )
  *
  *  Aliases supported (case-insensitive):
- *    go     -> MOVE     |  rotate -> TURN
- *    back   -> BACKWARD |  halt   -> STOP
- *    skill  -> ABILITY  |  deg    -> DEGREES
- *    step   -> STEPS    |  degree -> DEGREES
+ *    go -> MOVE,  rotate -> TURN,  halt -> STOP
+ *    back -> BACKWARD,  skill -> ABILITY
+ *    step -> STEPS,  degree/deg -> DEGREES
  *
- *  How to build:
+ *  Build:
  *    flex robot_lexer.l          (produces lex.yy.c)
  *    See Makefile for full build.
  * ============================================================
  */
 
-#include "robot_parser.tab.h"   /* token constants from Bison */
+#include "robot_parser.tab.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-int line_num = 1;               /* current source line (for error messages) */
+int line_num = 1;
 %}
 
-/* ── Flex Options ─────────────────────────────────────────────────────────── */
-%option noyywrap          /* no yywrap() needed for single-file input     */
-%option yylineno          /* let Flex maintain yylineno automatically      */
-%option case-insensitive  /* keywords match regardless of letter case      */
+%option noyywrap
+%option yylineno
+%option case-insensitive
 
-/* ── Named Regular-Expression Patterns ───────────────────────────────────── */
 DIGIT       [0-9]
 INTEGER     {DIGIT}+
 FLOAT       {DIGIT}+"."{DIGIT}+
-NUMBER      {FLOAT}|{INTEGER}        /* float before integer (greedy)       */
+NUMBER      {FLOAT}|{INTEGER}
 WHITESPACE  [ \t\r]+
 NEWLINE     \n
-STRING      \"[^\"]*\"               /* anything between double quotes       */
-COMMENT     #[^\n]*                  /* hash to end-of-line                  */
+STRING      \"[^\"]*\"
+COMMENT     #[^\n]*
 
 %%
 
-/* ── KEYWORD TOKENS ─────────────────────────────────────────────────────── */
-/*    Listed longest/most-specific first to avoid prefix conflicts           */
+"move"          { return MOVE;     }
+"go"            { return MOVE;     }
 
-"move"          { return MOVE;     }   /* begin a movement command           */
-"go"            { return MOVE;     }   /* alias: 'go forward 3'             */
+"forward"       { return FORWARD;  }
+"backward"      { return BACKWARD; }
+"back"          { return BACKWARD; }
 
-"forward"       { return FORWARD;  }   /* direction: straight ahead          */
-"backward"      { return BACKWARD; }   /* direction: reverse                 */
-"back"          { return BACKWARD; }   /* alias: 'move back 2'              */
+"left"          { return LEFT;     }
+"right"         { return RIGHT;    }
 
-"left"          { return LEFT;     }   /* direction: rotate/strafe left      */
-"right"         { return RIGHT;    }   /* direction: rotate/strafe right     */
+"turn"          { return TURN;     }
+"rotate"        { return TURN;     }
 
-"turn"          { return TURN;     }   /* rotation command                   */
-"rotate"        { return TURN;     }   /* alias: 'rotate left 90'           */
+"stop"          { return STOP;     }
+"halt"          { return STOP;     }
 
-"stop"          { return STOP;     }   /* halt all movement                  */
-"halt"          { return STOP;     }   /* alias: 'halt'                     */
+"ability"       { return ABILITY;  }
+"skill"         { return ABILITY;  }
 
-"ability"       { return ABILITY;  }   /* activate a special ability         */
-"skill"         { return ABILITY;  }   /* alias: 'skill "shield"'           */
+"speed"         { return SPEED;    }
 
-"speed"         { return SPEED;    }   /* set movement speed                 */
+"steps"         { return STEPS;    }
+"step"          { return STEPS;    }
+"degrees"       { return DEGREES;  }
+"degree"        { return DEGREES;  }
+"deg"           { return DEGREES;  }
 
-/* ── UNIT TOKENS ────────────────────────────────────────────────────────── */
-"steps"         { return STEPS;   }    /* distance unit (plural)             */
-"step"          { return STEPS;   }    /* distance unit (singular)           */
-"degrees"       { return DEGREES; }    /* angle unit (plural)                */
-"degree"        { return DEGREES; }    /* angle unit (singular)              */
-"deg"           { return DEGREES; }    /* short form                         */
-
-/* ── LITERAL TOKENS ─────────────────────────────────────────────────────── */
 {NUMBER}        {
-                    /*  Convert matched text to a double and store it in
-                     *  yylval so the parser can read the numeric value.    */
                     yylval.fval = atof(yytext);
                     return NUMBER;
                 }
 
 {STRING}        {
-                    /*  Strip the surrounding double-quotes before storing. */
-                    char *s = strdup(yytext + 1);   /* skip opening quote   */
-                    s[strlen(s) - 1] = '\0';         /* remove closing quote */
+                    char *s = strdup(yytext + 1);
+                    s[strlen(s) - 1] = '\0';
                     yylval.sval = s;
                     return STRING;
                 }
 
-/* ── IGNORED TOKENS ─────────────────────────────────────────────────────── */
-{COMMENT}       { /* skip single-line comments                */            }
-{WHITESPACE}    { /* skip spaces, tabs, carriage returns       */            }
-{NEWLINE}       { line_num++;  /* count lines for error messages */          }
+{COMMENT}       { /* skip comments */ }
+{WHITESPACE}    { /* skip whitespace */ }
+{NEWLINE}       { line_num++; }
 
-/* ── UNKNOWN CHARACTER ──────────────────────────────────────────────────── */
 .               {
-                    /*  Any character not matched above is an error.
-                     *  We print a message and continue scanning.           */
                     fprintf(stderr,
                         "Lexer Error (line %d): unknown character '%s'\n",
                         line_num, yytext);
                 }
 
 %%
-/*
- *  End of robot_lexer.l
- *
- *  No user code section is needed here.
- *  The parser calls yylex() which is auto-generated from the rules above.
- */

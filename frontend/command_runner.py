@@ -348,15 +348,16 @@ class CommandRunner:
 
     def _run_binary(self, source_code: str):
         try:
+            # Use binary mode + explicit UTF-8 to avoid Windows cp1252
+            # UnicodeEncodeError when source contains non-ASCII characters
             result = subprocess.run(
                 [BINARY_PATH],
-                input=source_code,
-                capture_output=True,
-                text=True,
+                input=source_code.encode("utf-8"),   # encode input as UTF-8 bytes
+                capture_output=True,                  # stdout/stderr returned as bytes
                 timeout=10
             )
-            stderr = result.stderr.strip()
-            stdout = result.stdout.strip()
+            stderr = result.stderr.decode("utf-8", errors="replace").strip()
+            stdout = result.stdout.decode("utf-8", errors="replace").strip()
 
             errors = [
                 line for line in stderr.splitlines()

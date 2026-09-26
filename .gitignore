@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.exe
+lex.yy.c
+robot_parser.tab.c
+robot_parser.tab.h
